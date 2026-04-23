@@ -3,8 +3,6 @@
 #include "types.hpp"
 #include <string>
 
-#define NUM_BITBOARDS 6
-
 enum BoardFlags: uint64_t
 {
 	BLACK_TO_MOVE = 1ULL << 0,
@@ -17,6 +15,8 @@ enum BoardFlags: uint64_t
 class Board
 {
 	private:
+		static constexpr uint64_t NUM_BITBOARDS = 6;
+
 		Bitboard m_bb_all;
 		Bitboard m_bb_black;
 		Bitboard m_bb_white;
@@ -29,15 +29,15 @@ class Board
 		uint16_t m_hf_clock;
 		uint16_t m_fm_clock;
 
-		constexpr void revoke_castle_wq();
-		constexpr void revoke_castle_wk();
-		constexpr void revoke_castle_bq();
-		constexpr void revoke_castle_bk();
+		inline constexpr void revoke_castle_wq();
+		inline constexpr void revoke_castle_wk();
+		inline constexpr void revoke_castle_bq();
+		inline constexpr void revoke_castle_bk();
 
-		constexpr void grant_castle_wq();
-		constexpr void grant_castle_wk();
-		constexpr void grant_castle_bq();
-		constexpr void grant_castle_bk();
+		inline constexpr void grant_castle_wq();
+		inline constexpr void grant_castle_wk();
+		inline constexpr void grant_castle_bq();
+		inline constexpr void grant_castle_bk();
 
 	public:
 		Board(const Board&) = delete;
@@ -45,18 +45,20 @@ class Board
 		Board& operator=(const Board&) = delete;
 		Board& operator=(Board&&) = delete;
 
-		Board();
-		Board(const std::string& fen);
+		constexpr Board();
+		constexpr Board(const std::string& fen);
 
-		void reset();
+		constexpr void reset();
 
-		void insert_piece(Piece piece, Color color, Rank rank, File file);
-		void insert_piece(Piece piece, Color color, uint8_t rank_idx, uint8_t file_idx);
-		void insert_piece(Piece piece, Color color, uint8_t idx);
+		constexpr void insert_piece(Piece piece, Color color, Rank rank, File file);
+		constexpr void insert_piece(Piece piece, Color color, uint8_t rank_idx, uint8_t file_idx);
+		constexpr void insert_piece(Piece piece, Color color, uint8_t idx);
+
 		constexpr void insert_piece(Piece piece, Color color, Bitboard pos_mask);
-
 		constexpr void set_active_color(Color color);
-
 		constexpr void grant_castling(Color color, Piece side);
 		constexpr void revoke_castling(Color color, Piece side);
+		constexpr void set_en_passant_square(Bitboard square);
 };
+
+#include "board.ipp"

@@ -1,40 +1,52 @@
-#include "board.hpp"
+#pragma once
+
 #include "board_initializer.hpp"
+#include "board.hpp"
 #include <cstring>
 
-Board::Board()
+constexpr Board::Board()
 {
 	reset();
 }
 
-Board::Board(const std::string& fen) : Board()
+constexpr Board::Board(const std::string& fen) : Board()
 {
 	BoardInitializer::initialize_fen(*this, fen);
 }
 
-void Board::reset()
+constexpr void Board::reset()
 {
 	m_bb_all = 0;
 	m_bb_black = 0;
 	m_bb_white = 0;
-	std::memset(m_bitboards, 0, NUM_BITBOARDS * sizeof(Bitboard));
+	if (std::is_constant_evaluated())
+	{
+		for (uint64_t i = 0; i < 6; i++)
+		{
+			m_bitboards[i] = 0;
+		}
+	}
+	else
+	{
+		std::memset(m_bitboards, 0, NUM_BITBOARDS * sizeof(Bitboard));
+	}
 	m_en_passant = 0;
 	m_flags = 0;
 	m_hf_clock = 0;
 	m_fm_clock = 0;
 }
 
-void Board::insert_piece(Piece piece, Color color, Rank rank, File file)
+constexpr void Board::insert_piece(Piece piece, Color color, Rank rank, File file)
 {
-	insert_piece(piece, color, rank - 1, file - 'A');
+	insert_piece(piece, color, rank - R_1, file - F_A);
 }
 
-void Board::insert_piece(Piece piece, Color color, uint8_t rank_idx, uint8_t file_idx)
+constexpr void Board::insert_piece(Piece piece, Color color, uint8_t rank_idx, uint8_t file_idx)
 {
 	insert_piece(piece, color, (uint8_t)(8 * rank_idx + file_idx));
 }
 
-void Board::insert_piece(Piece piece, Color color, uint8_t idx)
+constexpr void Board::insert_piece(Piece piece, Color color, uint8_t idx)
 {
 	insert_piece(piece, color, (uint64_t)(1ULL << idx));
 }
@@ -103,4 +115,9 @@ constexpr void Board::revoke_castling(Color color, Piece side)
 	{
 		revoke_castle_bq();
 	}
+}
+
+constexpr void Board::set_en_passant_square(Bitboard square)
+{
+	m_en_passant = square;
 }

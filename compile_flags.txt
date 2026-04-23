@@ -3,4 +3,7 @@
 -Wextra
 -Wpedantic
 -xc++
+-iquotesrc
+-iquoteinclude
 -Iinclude
+-Isrc

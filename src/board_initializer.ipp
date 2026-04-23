@@ -1,3 +1,5 @@
+#pragma once
+
 #include "board_initializer.hpp"
 
 constexpr void BoardInitializer::initialize_default(Board& board)
@@ -11,6 +13,7 @@ constexpr void BoardInitializer::initialize_fen(Board& board, const std::string&
 	size_t str_idx = initialize_fen_placement(board, fen, 0);
 	board.set_active_color((Color)(fen[str_idx] == 'w'));
 	str_idx = initialize_fen_castling(board, fen, str_idx + 2);
+	str_idx = initialize_fen_enpassant(board, fen, str_idx);
 }
 
 constexpr size_t BoardInitializer::initialize_fen_placement(Board& board, const std::string& fen, size_t start_idx)
@@ -60,4 +63,23 @@ constexpr size_t BoardInitializer::initialize_fen_castling(Board& board, const s
 	}
 
 	return start_idx;
+}
+
+constexpr size_t BoardInitializer::initialize_fen_enpassant(Board& board, const std::string& fen, size_t start_idx)
+{
+	if (fen[start_idx] == '-')
+	{
+		return start_idx + 2;
+	}
+
+	File file = (File)std::toupper(fen[start_idx]);
+	Rank rank = (Rank)(fen[start_idx + 1] - '0');
+	board.set_en_passant_square(algebraic_to_bitboard(file, rank));
+
+	return start_idx + 3;
+}
+
+constexpr Bitboard BoardInitializer::algebraic_to_bitboard(File file, Rank rank)
+{
+	return 1ULL << (8 * (rank - R_1) + (file - F_A));
 }

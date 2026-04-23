@@ -4,16 +4,6 @@
 
 using Bitboard = uint64_t;
 
-// enum Piece: uint8_t
-// {
-// 	Pawn = 'p',
-// 	Knight = 'n',
-// 	Bishop = 'b',
-// 	Rook = 'r',
-// 	Queen = 'q',
-// 	King = 'k'
-// };
-
 enum Piece: uint8_t
 {
 	Pawn,
@@ -62,24 +52,24 @@ enum Color: bool
 
 enum File: uint8_t
 {
-	A = 'A',
-	B = 'B',
-	C = 'C',
-	D = 'D',
-	E = 'E',
-	F = 'F',
-	G = 'G',
-	H = 'H',
+	F_A = 'A',
+	F_B = 'B',
+	F_C = 'C',
+	F_D = 'D',
+	F_E = 'E',
+	F_F = 'F',
+	F_G = 'G',
+	F_H = 'H',
 };
 
 enum Rank: uint8_t
 {
-	R1 = 1,
-	R2 = 2,
-	R3 = 3,
-	R4 = 4,
-	R5 = 5,
-	R6 = 6,
-	R7 = 7,
-	R8 = 8,
+	R_1 = 1,
+	R_2 = 2,
+	R_3 = 3,
+	R_4 = 4,
+	R_5 = 5,
+	R_6 = 6,
+	R_7 = 7,
+	R_8 = 8,
 };
