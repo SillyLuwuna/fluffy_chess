@@ -35,5 +35,11 @@ constexpr std::string BoardPrinter::get_string(const Board& board)
 		board_str += "\n---------------------------------\n";
 	}
 
+	board_str += "player: ";
+	board_str += board.get
+	board_str += "ep_passant: ";
+	board_str += bitboard_to_algebraic(board.get_en_passant_square());
+	board_str += "\n";
+
 	return board_str;
 }

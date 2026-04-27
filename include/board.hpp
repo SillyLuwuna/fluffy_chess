@@ -60,6 +60,11 @@ namespace fluffy_chess
 
 			constexpr Piece get_piece_at(Bitboard pos_mask) const;
 			constexpr Color get_color_at(Bitboard pos_mask) const;
+			constexpr Bitboard get_en_passant_square() const;
+			constexpr uint64_t get_flags() const;
+			constexpr uint16_t get_hm_clock() const;
+			constexpr uint16_t get_fm_clock() const;
+			constexpr bool is_black_playing() const;
 	};
 }
 
@@ -188,4 +193,29 @@ constexpr Piece Board::get_piece_at(Bitboard pos_mask) const
 constexpr Color Board::get_color_at(Bitboard pos_mask) const
 {
 	return pos_mask & m_bb_black ? Black : White;
+}
+
+constexpr Bitboard Board::get_en_passant_square() const
+{
+	return m_en_passant;
+}
+
+constexpr uint64_t Board::get_flags() const
+{
+	return m_flags;
+}
+
+constexpr uint16_t Board::get_hm_clock() const
+{
+	return m_hm_clock;
+}
+
+constexpr uint16_t Board::get_fm_clock() const
+{
+	return m_fm_clock;
+}
+
+constexpr bool Board::is_black_playing() const
+{
+	return m_flags & BLACK_TO_MOVE;
 }

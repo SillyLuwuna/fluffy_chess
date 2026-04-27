@@ -12,7 +12,6 @@ namespace fluffy_chess
 			constexpr static size_t initialize_fen_placement(Board& board, const std::string& fen, size_t start_idx);
 			constexpr static size_t initialize_fen_castling(Board& board, const std::string& fen, size_t start_idx);
 			constexpr static size_t initialize_fen_enpassant(Board& board, const std::string& fen, size_t start_idx);
-			constexpr static Bitboard algebraic_to_bitboard(File file, Rank rank);
 
 		public:
 			constexpr static void initialize_default(Board& board);
@@ -103,13 +102,8 @@ constexpr size_t BoardInitializer::initialize_fen_enpassant(Board& board, const 
 	}
 
 	File file = (File)std::toupper(fen[start_idx]);
-	Rank rank = (Rank)(fen[start_idx + 1] - '0');
+	Rank rank = idx_to_rank(fen[start_idx + 1] - '0');
 	board.set_en_passant_square(algebraic_to_bitboard(file, rank));
 
 	return start_idx + 3;
-}
-
-constexpr Bitboard BoardInitializer::algebraic_to_bitboard(File file, Rank rank)
-{
-	return 1ULL << (8 * (rank - R_1) + (file - F_A));
 }
