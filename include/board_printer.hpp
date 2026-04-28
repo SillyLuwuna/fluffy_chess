@@ -46,7 +46,8 @@ constexpr std::string BoardPrinter::get_string(const Board& board)
 	board_str += "\n";
 
 	board_str += "ep_passant: ";
-	board_str += bitboard_to_algebraic(board.get_en_passant_square());
+	Bitboard en_passant_square = board.get_en_passant_square();
+	board_str += en_passant_square != 0ULL ? bitboard_to_algebraic(en_passant_square) : "-";
 	board_str += "\n";
 
 	board_str += "half_clock: ";
