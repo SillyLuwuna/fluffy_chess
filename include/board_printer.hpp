@@ -36,9 +36,24 @@ constexpr std::string BoardPrinter::get_string(const Board& board)
 	}
 
 	board_str += "player: ";
-	board_str += board.get
+	board_str += board.is_black_playing() ? "black\n" : "white\n";
+
+	board_str += "castling_rights: ";
+	board_str += board.white_can_castle_king_side() ? "K" : "";
+	board_str += board.white_can_castle_queen_side() ? "Q" : "";
+	board_str += board.black_can_castle_king_side() ? "k" : "";
+	board_str += board.black_can_castle_queen_side() ? "q" : "";
+	board_str += "\n";
+
 	board_str += "ep_passant: ";
 	board_str += bitboard_to_algebraic(board.get_en_passant_square());
+	board_str += "\n";
+
+	board_str += "half_clock: ";
+	board_str += std::to_string(board.get_hm_clock());
+	board_str += "\n";
+	board_str += "full_clock: ";
+	board_str += std::to_string(board.get_fm_clock());
 	board_str += "\n";
 
 	return board_str;

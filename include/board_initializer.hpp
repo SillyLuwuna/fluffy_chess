@@ -87,7 +87,7 @@ constexpr size_t BoardInitializer::initialize_fen_castling(Board& board, const s
 	while ((curr_char = fen[start_idx++]) != ' ')
 	{
 		Color color = (Color)(bool)std::isupper(curr_char);
-		Piece side = parse_piece(curr_char);
+		Piece side = parse_piece(std::tolower(curr_char));
 		board.grant_castling(color, side);
 	}
 

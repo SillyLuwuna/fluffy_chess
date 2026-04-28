@@ -1,6 +1,7 @@
 #pragma once
 #include "types.hpp"
 #include <cstring>
+#include <iostream>
 #include <string>
 
 namespace fluffy_chess
@@ -65,6 +66,10 @@ namespace fluffy_chess
 			constexpr uint16_t get_hm_clock() const;
 			constexpr uint16_t get_fm_clock() const;
 			constexpr bool is_black_playing() const;
+			constexpr bool black_can_castle_king_side() const;
+			constexpr bool black_can_castle_queen_side() const;
+			constexpr bool white_can_castle_king_side() const;
+			constexpr bool white_can_castle_queen_side() const;
 	};
 }
 
@@ -218,4 +223,24 @@ constexpr uint16_t Board::get_fm_clock() const
 constexpr bool Board::is_black_playing() const
 {
 	return m_flags & BLACK_TO_MOVE;
+}
+
+constexpr bool Board::black_can_castle_king_side() const
+{
+	return m_flags & BLACK_CAN_CASTLE_K;
+}
+
+constexpr bool Board::black_can_castle_queen_side() const
+{
+	return m_flags & BLACK_CAN_CASTLE_Q;
+}
+
+constexpr bool Board::white_can_castle_king_side() const
+{
+	return m_flags & WHITE_CAN_CASTLE_K;
+}
+
+constexpr bool Board::white_can_castle_queen_side() const
+{
+	return m_flags & WHITE_CAN_CASTLE_Q;
 }
