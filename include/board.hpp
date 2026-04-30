@@ -59,6 +59,7 @@ namespace fluffy_chess
 			constexpr void set_hm_clock(uint16_t value);
 			constexpr void set_fm_clock(uint16_t value);
 
+			constexpr bool has_piece_at(Bitboard pos_mask) const;
 			constexpr Piece get_piece_at(Bitboard pos_mask) const;
 			constexpr Color get_color_at(Bitboard pos_mask) const;
 			constexpr Bitboard get_en_passant_square() const;
@@ -181,6 +182,11 @@ constexpr void Board::set_hm_clock(uint16_t value)
 constexpr void Board::set_fm_clock(uint16_t value)
 {
 	m_fm_clock = value;
+}
+
+constexpr bool Board::has_piece_at(Bitboard pos_mask) const
+{
+	return (get_piece_at(pos_mask) != PieceNum);
 }
 
 constexpr Piece Board::get_piece_at(Bitboard pos_mask) const

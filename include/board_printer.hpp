@@ -9,6 +9,7 @@ namespace fluffy_chess
 		public:
 			static void print(const Board& board);
 			constexpr static std::string get_string(const Board& board);
+			constexpr static std::string get_fen_string(const Board& board);
 	};
 }
 
@@ -58,4 +59,63 @@ constexpr std::string BoardPrinter::get_string(const Board& board)
 	board_str += "\n";
 
 	return board_str;
+}
+
+constexpr std::string BoardPrinter::get_fen_string(const Board& board)
+{
+	// "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+	std::string fen_str;
+	for (int i = 7; i >= 0; i--)
+	{
+		uint8_t no_piece_counter = 0;
+		for (int j = 0; j < 8; j++)
+		{
+			Bitboard pos = gen_bitboard(i, j);
+			if (!board.has_piece_at(pos))
+			{
+				no_piece_counter++;
+				continue;
+			}
+
+			if(no_piece_counter > 0)
+			{
+				fen_str += no_piece_counter;
+			}
+
+			char c = piece_char(board.get_piece_at(pos));
+			fen_str += board.get_color_at(gen_bitboard(i, j)) == White ? std::toupper(c) : c;
+			no_piece_counter = 0;
+		}
+
+		if(no_piece_counter > 0)
+		{
+			fen_str += std::to_string(no_piece_counter);
+		}
+
+		if (i > 0)
+		{
+			fen_str += "/";
+		}
+	}
+	fen_str += " ";
+
+	fen_str += board.is_black_playing() ? "b" : "w";
+	fen_str += " ";
+
+	fen_str += board.white_can_castle_king_side() ? "K" : "";
+	fen_str += board.white_can_castle_queen_side() ? "Q" : "";
+	fen_str += board.black_can_castle_king_side() ? "k" : "";
+	fen_str += board.black_can_castle_queen_side() ? "q" : "";
+	fen_str += " ";
+
+	Bitboard en_passant_square = board.get_en_passant_square();
+	fen_str += en_passant_square != 0ULL ? bitboard_to_algebraic(en_passant_square) : "-";
+	fen_str += " ";
+
+	fen_str += std::to_string(board.get_hm_clock());
+	fen_str += " ";
+
+	fen_str += std::to_string(board.get_fm_clock());
+
+	return fen_str;
 }
